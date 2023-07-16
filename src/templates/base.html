@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="theme-color" content="#000000" />
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.2.0/socket.io.js"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+        <script src="{{url_for('static', filename='js/script.js' )}}"></script>
+        <title> Blind Test </title>
+    </head>
+    <body>
+        <div id="root">
+            This is the beginnig of a new story...
+        </div>
+        <div id="messages-container">
+            Liste des messages
+            <ul id="messages">
+            </ul>
+        </div>
+        <div class="content">
+            {% block content %} {% endblock %}
+        </div>
+    </body>
+</html>

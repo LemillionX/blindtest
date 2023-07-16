@@ -1,13 +1,10 @@
-<!DOCTYPE html>
-<html lang="fr">
-    <head>
-        <meta charset="utf-8" />
-        <meta name="theme-color" content="#000000" />
-        <title> Blind Test </title>
-    </head>
-    <body>
-        <div id="root">
-            This is the beginnig of a new story...
-        </div>
-    </body>
-</html>
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="menu">
+        <ul>
+            <!-- <li> <a href="{{ url_for('room') }}"> Create a Room </a> </li> -->
+            <li> <a href="{{ url_for('room') }}"> Join a Room </a> </li>
+        </ul>
+    </div>
+{% endblock %}

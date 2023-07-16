@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="participants-container">
+        Liste des participants
+        <ul id="participants">
+        </ul>
+    </div>
+    <form id="join-form" action="{{ url_for('room') }}">
+        <input type="text" id="username" placeholder="Enter your username" required>
+        <input type="text" id="token" placeholder="Enter the host token"> 
+        <button type="submit">Join</button>
+    </form>
+    <button id="startButton" style="display:none;"> Start the game </button>
+{% endblock %}
