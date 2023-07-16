@@ -23,9 +23,6 @@ def index():
 def room():
     return render_template('room.html')
 
-@app.route('/join/')
-def join():
-    return render_template('join.html')
 
 # Socket for the connexion to the room
 @socketio.on('register')
