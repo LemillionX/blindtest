@@ -5,3 +5,4 @@
 <li> Songs (play, answer check)
 <li> Users class (name, points)
 <li> Layout
+<li> Advanced functionnality (categories, etc)
