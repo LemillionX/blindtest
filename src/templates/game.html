@@ -8,9 +8,13 @@
     </div>
     <audio id="audioPlayer" src="" controls=""></audio>
     {% if showPlayBtn %}
-        <button id="playButton"> Play Song </button>
-    {% else %}
-        <button id="playButton" style="display:none;"> Play Song </button>
+    <button id="playButton"> Play Song </button>
+    <button id="nextButton"> Next Song </button>
     {% endif %}
+    <div id="answer-container">
+        <input type="text" id="answer" placeholder="Enter the title">
+        <button id="answerButton"> Submit </button>
+    </div>
+
 
 {% endblock %}

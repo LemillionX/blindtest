@@ -20,6 +20,11 @@ $(document).ready(function() {
         socket.emit('start_game');
     });
 
+    $('#answerButton').click(function(){
+        let answer = $('#answer').val();
+        socket.emit('check_answer', {answer: answer});
+    })
+
 });
 
 socket.on('game_started', function(route){

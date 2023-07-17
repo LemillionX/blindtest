@@ -14,6 +14,7 @@ host_token = secrets.token_hex(16)
 song = {
     "src": "../static/songs/oshi-no-ko-opening01.mp3",
     "start": 30,
+    "answer": "oshi no ko"
 }
 duration = 10
 
@@ -63,6 +64,15 @@ def on_connect():
 @socketio.on('play_song')
 def on_play_song():
     emit('song_playing', {'src': song['src'], 'start': song['start'] , 'duration': duration}, broadcast=True)
+
+# Socket to check the answer
+@socketio.on('check_answer')
+def on_check_answer(data):
+    answer = data['answer'].lower()
+    if answer in song['answer']:
+        print("Correct !")
+    else:
+        print("Wrong !")
 
 if __name__ == '__main__':
     socketio.run(app)
