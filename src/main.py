@@ -1,8 +1,7 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for
+from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
 from flask_socketio import SocketIO, emit
 import secrets
 import json
-import random
 import numpy as np
 
 # Starting the app
@@ -11,8 +10,7 @@ app.config['SECRET_KEY'] = 'your_secret_key+6561€=<3'
 socketio = SocketIO(app)
 
 # Variables
-app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None}
-PARTICIPANTS = []
+app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None, 'players':{}}
 HOST_TOKEN = secrets.token_hex(16)
 NB_SONGS = 5 
 SONG_DURATION = 10
@@ -26,11 +24,17 @@ with open('./static/songs/songs.json', 'r', encoding='utf-8') as file:
 # Routes
 @app.route('/')
 def index():
-    return render_template('index.html')
+    player_id = request.cookies.get("player_id")
+    if not player_id:
+        player_id = secrets.token_hex(16)
+    resp = make_response(render_template('index.html'))
+    resp.set_cookie("player_id", player_id)
+    # return render_template('index.html')
+    return resp
 
 @app.route('/room/')
 def room():
-    if len(PARTICIPANTS) == 0 or app.shared_variable['song_idx'] == NB_SONGS-1:
+    if len(app.shared_variable["players"]) == 0 or app.shared_variable['song_idx'] == NB_SONGS-1:
         token = HOST_TOKEN
     else:
         token = ''
@@ -48,7 +52,8 @@ def game():
 def on_register(data):
     username = data['username']
     token = data['token']
-    PARTICIPANTS.append(username)
+    user = {"username":username, "score":0}
+    app.shared_variable["players"][request.cookies.get('player_id')] = user
     emit('message', f'{username} has joined the game.')
     emit('user_joined', {'username':username}, broadcast=True)
     if token == HOST_TOKEN:
@@ -70,7 +75,7 @@ def on_start_game():
 @socketio.on('connect')
 def on_connect():
     emit('message', 'You are connected')
-    emit('participants', {'participants':PARTICIPANTS})
+    emit('participants', app.shared_variable["players"])
 
 # Socket to play songs
 @socketio.on('play_song')
@@ -88,6 +93,8 @@ def on_check_answer(data):
     answer = data['answer'].lower()
     if answer in list(map(lambda x: x.lower(), app.shared_variable['song']['answer'])):
         print("Correct !")
+        app.shared_variable["players"][request.cookies.get('player_id')]["score"] += 1
+        emit('participants', app.shared_variable["players"], broadcast=True) 
     else:
         print("Wrong !")
 
@@ -107,6 +114,7 @@ def on_load_next_song():
     if app.shared_variable['song_idx'] + 1 < NB_SONGS:
         app.shared_variable['song_idx'] +=1
         app.shared_variable['song'] = LST_SONG[app.shared_variable['indices'][app.shared_variable['song_idx']]]
+        emit('next_song_loaded', broadcast=True)
     else:
         emit('game_ended', broadcast=True)
 

@@ -34,26 +34,28 @@ $(document).ready(function() {
 
     $('#nextButton').click(function(){
         let song_container = document.getElementById("song-container")
-        let video = document.getElementById("videoPlayer");
         if (song_container.style.opacity == 0){
             console.log("Let's see the answer");
             socket.emit('reveal_song');            
         } else {
             console.log("Moving on to the next song")
-            video.pause();
-            clearTimeout(SONG_TIMEOUT);
-            song_container.style.opacity = 0;
-            let song_name = document.getElementById("song-title");
-            song_name.innerHTML = '';
-            let answer = document.getElementById("answer")
-            answer.disabled = false;
-            answer.value = '';
             socket.emit('load_next_song');
         }
-
     })
-
 });
+
+socket.on('next_song_loaded', function(){
+    let song_container = document.getElementById("song-container")
+    let video = document.getElementById("videoPlayer");
+    video.pause();
+    clearTimeout(SONG_TIMEOUT);
+    song_container.style.opacity = 0;
+    let song_name = document.getElementById("song-title");
+    song_name.innerHTML = '';
+    let answer = document.getElementById("answer")
+    answer.disabled = false;
+    answer.value = '';
+})
 
 socket.on('song_revealed', function(song){
     let song_container = document.getElementById("song-container")
@@ -80,11 +82,12 @@ socket.on('message', function(data) {
     $('#messages').append('<li>' + data + '</li>')
 });
 
-socket.on('participants', function(data) {
+socket.on('participants', function(participants) {
     $('#participants').empty();
-    data.participants.forEach(element => {
-        $('#participants').append('<li>' + element + '</li>');
-    });
+    for (let key in participants){
+        let player = participants[key];
+        $('#participants').append(`<li> <div> <div> ${player.username} </div> <div> Score: ${player.score} </div> </div> </li>`);
+    }
 });
 
 socket.on('user_joined', function(data){

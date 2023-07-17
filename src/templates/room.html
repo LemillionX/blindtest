@@ -6,7 +6,7 @@
         <ul id="participants">
         </ul>
     </div>
-    <form id="join-form" action="{{ url_for('room') }}">
+    <form id="join-form" action="{{ url_for('room') }}" method="post">
         <input type="text" id="username" placeholder="Enter your username" required>
         <input type="text" id="token" placeholder="Enter the host token" value={{token}} > 
         <button type="submit">Join</button>
