@@ -20,12 +20,18 @@ $(document).ready(function() {
         socket.emit('start_game');
     });
 
+    $('#againButton').click(function(){
+        socket.emit('start_game');
+        $("#game-panel").show();
+        $("#again").hide();
+    });
+
     $('#answerButton').click(function(){
         let answer = $('#answer').val();
         socket.emit('check_answer', {answer: answer});
     })
 
-    $('#nextButton').click(function(song){
+    $('#nextButton').click(function(){
         let song_container = document.getElementById("song-container")
         let video = document.getElementById("videoPlayer");
         if (song_container.style.opacity == 0){
@@ -36,6 +42,8 @@ $(document).ready(function() {
             video.pause();
             clearTimeout(SONG_TIMEOUT);
             song_container.style.opacity = 0;
+            let song_name = document.getElementById("song-title");
+            song_name.innerHTML = '';
             socket.emit('load_next_song');
         }
 
@@ -59,6 +67,8 @@ socket.on('song_revealed', function(song){
 
 socket.on('game_started', function(route){
     window.location.href=route;
+    $("#game-panel").show();
+    $("#again").hide();
     console.log("Game is starting...");
 });
 
@@ -88,4 +98,12 @@ socket.on('song_playing', function(song) {
     clearTimeout(SONG_TIMEOUT);
     audio.play();
     SONG_TIMEOUT = setTimeout(function(){audio.pause();}, song.duration*1000);
+});
+
+socket.on('game_ended', function(){
+    let song_container = document.getElementById("song-container");
+    song_container.style.opacity = 0;
+
+    $("#game-panel").hide();
+    $("#again").show();
 });

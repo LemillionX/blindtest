@@ -10,14 +10,22 @@
         <video id="videoPlayer" src="" playsinline></video>
         <h2 id="song-title"> </h2>
     </div>
-    {% if showPlayBtn %}
-    <button id="playButton"> Play Song </button>
-    <button id="nextButton"> Next Song </button>
-    {% endif %}
-    <div id="answer-container">
-        <input type="text" id="answer" placeholder="Enter the title">
-        <button id="answerButton"> Submit </button>
+    <div id="game-panel">
+        {% if showPlayBtn %}
+        <button id="playButton"> Play Song </button>
+        <button id="nextButton"> Next Song </button>
+        {% endif %}
+        <div id="answer-container">
+            <input type="text" id="answer" placeholder="Enter the title">
+            <button id="answerButton"> Submit </button>
+        </div>
     </div>
+    {% if showPlayBtn %}
+    <div id="again" style="display:none">
+        <button id="againButton"> Start a new game </button>
+    </div>
+    {% endif %}
+
 
 
 {% endblock %}
