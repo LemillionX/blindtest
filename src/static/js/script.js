@@ -16,6 +16,15 @@ $(document).ready(function() {
         socket.emit('play_song');
     });
 
+    $('#startButton').click(function(){
+        socket.emit('start_game');
+    });
+
+});
+
+socket.on('game_started', function(route){
+    window.location.href=route;
+    console.log("Game is starting...");
 });
 
 socket.on('message', function(data) {
@@ -34,7 +43,7 @@ socket.on('user_joined', function(data){
 });
 
 socket.on('show_start_button', function(){
-    $('#startButton').show();
+    $('#start-form').show();
 });
 
 socket.on('song_playing', function(song) {

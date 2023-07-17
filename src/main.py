@@ -30,12 +30,12 @@ def room():
         token = ''
     return render_template('room.html', token=token)
 
-@app.route('/game/', methods=['POST'])
+@app.route('/game/', methods=['POST', 'GET'])
 def game():
-    token = request.form['token']
-    print(token)
-    print(f"Am I an host ? {token == host_token}")
-    return render_template('game.html', style= token == host_token)
+    if request.method == 'POST': 
+        token = request.form['token']
+        return render_template('game.html', showPlayBtn= token == host_token)
+    return render_template('game.html', showPlayBtn=False)
 
 # Socket for the connexion to the room
 @socketio.on('register')
@@ -47,6 +47,11 @@ def on_register(data):
     emit('user_joined', {'username':username}, broadcast=True)
     if token == host_token:
         emit('show_start_button')
+
+# Socket to launch the game
+@socketio.on('start_game')
+def on_start_game():
+    emit('game_started', url_for("game") , broadcast=True, include_self=False)
 
 # Socket for initial connection to the server 
 @socketio.on('connect')
