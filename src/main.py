@@ -29,7 +29,6 @@ def index():
         player_id = secrets.token_hex(16)
     resp = make_response(render_template('index.html'))
     resp.set_cookie("player_id", player_id)
-    # return render_template('index.html')
     return resp
 
 @app.route('/room/')
@@ -69,6 +68,9 @@ def on_start_game():
         song['start'] = app.shared_variable['start'][idx]
     app.shared_variable['indices'] = np.random.choice(np.arange(len(LST_SONG)), size=NB_SONGS, replace=False).tolist()
     app.shared_variable['song'] = LST_SONG[app.shared_variable['indices'][app.shared_variable['song_idx']]]
+    for player in app.shared_variable["players"]:
+        app.shared_variable["players"][player]["score"] = 0
+    emit('participants', app.shared_variable["players"], broadcast=True)
     emit('game_started', url_for("game") , broadcast=True, include_self=False)
 
 # Socket for initial connection to the server 
@@ -92,11 +94,8 @@ def on_play_song():
 def on_check_answer(data):
     answer = data['answer'].lower()
     if answer in list(map(lambda x: x.lower(), app.shared_variable['song']['answer'])):
-        print("Correct !")
         app.shared_variable["players"][request.cookies.get('player_id')]["score"] += 1
         emit('participants', app.shared_variable["players"], broadcast=True) 
-    else:
-        print("Wrong !")
 
 # Socket for the reveal of the song
 @socketio.on('reveal_song')

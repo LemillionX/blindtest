@@ -29,16 +29,15 @@ $(document).ready(function() {
     $('#answerButton').click(function(){
         let answer = $('#answer').val();
         document.getElementById("answer").disabled = true;
+        document.getElementById("answerButton").disabled = true;
         socket.emit('check_answer', {answer: answer});
     })
 
     $('#nextButton').click(function(){
         let song_container = document.getElementById("song-container")
         if (song_container.style.opacity == 0){
-            console.log("Let's see the answer");
             socket.emit('reveal_song');            
         } else {
-            console.log("Moving on to the next song")
             socket.emit('load_next_song');
         }
     })
@@ -53,11 +52,15 @@ socket.on('next_song_loaded', function(){
     let song_name = document.getElementById("song-title");
     song_name.innerHTML = '';
     let answer = document.getElementById("answer")
+    document.getElementById("answerButton").disabled = false;
     answer.disabled = false;
     answer.value = '';
 })
 
 socket.on('song_revealed', function(song){
+    document.getElementById("answer").disabled = true;
+    document.getElementById("answerButton").disabled = true;
+    
     let song_container = document.getElementById("song-container")
     let video = document.getElementById("videoPlayer");
     let song_name = document.getElementById("song-title");
@@ -75,7 +78,6 @@ socket.on('game_started', function(route){
     window.location.href=route;
     $("#game-panel").show();
     $("#again").hide();
-    console.log("Game is starting...");
 });
 
 socket.on('message', function(data) {
@@ -110,7 +112,7 @@ socket.on('song_playing', function(song) {
 socket.on('game_ended', function(){
     let song_container = document.getElementById("song-container");
     song_container.style.opacity = 0;
-
+    document.getElementById("videoPlayer").pause();
     $("#game-panel").hide();
     $("#again").show();
 });
