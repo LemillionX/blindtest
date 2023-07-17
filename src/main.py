@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_socketio import SocketIO, emit
 import pygame
 import secrets
@@ -11,6 +11,11 @@ socketio = SocketIO(app)
 # Variables
 participants = []
 host_token = secrets.token_hex(16)
+song = {
+    "src": "../static/songs/oshi-no-ko-opening01.mp3",
+    "start": 30,
+}
+duration = 10
 
 # Routes
 @app.route('/')
@@ -25,6 +30,12 @@ def room():
         token = ''
     return render_template('room.html', token=token)
 
+@app.route('/game/', methods=['POST'])
+def game():
+    token = request.form['token']
+    print(token)
+    print(f"Am I an host ? {token == host_token}")
+    return render_template('game.html', style= token == host_token)
 
 # Socket for the connexion to the room
 @socketio.on('register')
@@ -42,6 +53,11 @@ def on_register(data):
 def on_connect():
     emit('message', 'You are connected')
     emit('participants', {'participants':participants})
+
+# Socket to play songs
+@socketio.on('play_song')
+def on_play_song():
+    emit('song_playing', {'src': song['src'], 'start': song['start'] , 'duration': duration}, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)

@@ -11,5 +11,8 @@
         <input type="text" id="token" placeholder="Enter the host token" value={{token}} > 
         <button type="submit">Join</button>
     </form>
-    <button id="startButton" style="display:none;"> Start the game </button>
+    <form id="startButton" style="display:none;" action="{{ url_for('game') }}" method="post">
+        <input type="text" name="token" placeholder="Enter the host token" value="{{token}}">
+        <button type="submit"  > Start the game </button>
+    </form>
 {% endblock %}

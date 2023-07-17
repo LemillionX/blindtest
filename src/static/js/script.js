@@ -1,6 +1,8 @@
 
 let socket = io();
 
+let timeOut;
+
 $(document).ready(function() {
     $('#join-form').submit(function(event) {
         event.preventDefault();
@@ -9,6 +11,11 @@ $(document).ready(function() {
         socket.emit('register', {username: username, token: token});
         $('#join-form').hide();
     });
+
+    $('#playButton').click(function(){
+        socket.emit('play_song');
+    });
+
 });
 
 socket.on('message', function(data) {
@@ -28,4 +35,13 @@ socket.on('user_joined', function(data){
 
 socket.on('show_start_button', function(){
     $('#startButton').show();
-})
+});
+
+socket.on('song_playing', function(song) {
+    let audio = document.getElementById("audioPlayer");
+    audio.src = song.src;
+    audio.currentTime = song.start;
+    clearTimeout(timeOut);
+    audio.play();
+    timeOut = setTimeout(function(){audio.pause();}, song.duration*1000);
+});

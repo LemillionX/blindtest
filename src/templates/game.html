@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <div id="participants-container">
+        Liste des participants
+        <ul id="participants">
+        </ul>
+    </div>
+    <audio id="audioPlayer" src="" controls=""></audio>
+    {% if style %}
+        <button id="playButton"> Play Song </button>
+    {% else %}
+        <button id="playButton" style="display:none;"> Play Song </button>
+    {% endif %}
+
+{% endblock %}
