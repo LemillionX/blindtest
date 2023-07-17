@@ -26,16 +26,17 @@ $(document).ready(function() {
     })
 
     $('#nextButton').click(function(song){
+        let song_container = document.getElementById("song-container")
         let video = document.getElementById("videoPlayer");
-        if (video.style.opacity == 0){
+        if (song_container.style.opacity == 0){
             console.log("Let's see the answer");
             socket.emit('reveal_song');            
         } else {
             console.log("Moving on to the next song")
             video.pause();
             clearTimeout(SONG_TIMEOUT);
-            video.style.opacity = 0;
-            socket.emit('next_song');
+            song_container.style.opacity = 0;
+            socket.emit('load_next_song');
         }
 
     })
@@ -43,12 +44,15 @@ $(document).ready(function() {
 });
 
 socket.on('song_revealed', function(song){
+    let song_container = document.getElementById("song-container")
     let video = document.getElementById("videoPlayer");
+    let song_name = document.getElementById("song-title");
+    song_name.innerHTML = song['name']
     video.src = song.src;
     video.currentTime = song.start;
     clearTimeout(SONG_TIMEOUT);
     video.play();
-    video.style.opacity = 100;
+    song_container.style.opacity = 100;
     SONG_TIMEOUT = setTimeout(function(){video.pause();}, song.duration*1000);
 });
 

@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_socketio import SocketIO, emit
 import secrets
+import json
 
 # Starting the app
 app = Flask(__name__)
@@ -8,21 +9,24 @@ app.config['SECRET_KEY'] = 'your_secret_key+6561€=<3'
 socketio = SocketIO(app)
 
 # Variables
+app.shared_variable = {'song_idx':0, 'song': None}
 PARTICIPANTS = []
 HOST_TOKEN = secrets.token_hex(16)
-NB_SONGS = 1 
+NB_SONGS = 2 
 SONG_DURATION = 10
 SONG_INF = 0
 SONG_SUP = 180 - SONG_DURATION
 SONG_START = 30
-song = {
-    "src": "../static/songs/【推しの子】ノンクレジットオープニング｜YOASOBI「アイドル」.mp4",
-    "start": 30,
-    "answer": "oshi no ko"
-}
-
+LST_SONG = {}
+with open('./static/songs/songs.json', 'r', encoding='utf-8') as file:
+    LST_SONG = json.load(file)['songs']
 
 # Initilisation of the seed
+for idx, song in enumerate(LST_SONG):
+    song['start'] = SONG_START
+
+app.shared_variable['song'] = LST_SONG[app.shared_variable['song_idx']]
+
 
 # Routes
 @app.route('/')
@@ -69,7 +73,10 @@ def on_connect():
 # Socket to play songs
 @socketio.on('play_song')
 def on_play_song():
-    emit('song_playing', {'src': song['src'], 'start': song['start'] , 'duration': SONG_DURATION}, broadcast=True)
+    emit('song_playing', {  'src': app.shared_variable['song']['src'],
+                            'start': app.shared_variable['song']['start'],
+                            'duration': SONG_DURATION},
+                            broadcast=True)
 
 # Socket to check the answer
 @socketio.on('check_answer')
@@ -83,7 +90,19 @@ def on_check_answer(data):
 # Socket for the reveal of the song
 @socketio.on('reveal_song')
 def on_reveal_song():
-    emit('song_revealed', {'src': song['src'], 'start': song['start'] , 'duration': 1.5*SONG_DURATION}, broadcast=True)
+    emit('song_revealed', { 'src': app.shared_variable['song']['src'],
+                            'start': app.shared_variable['song']['start'],
+                            'duration': 1.5*SONG_DURATION,
+                            'name':app.shared_variable['song']['answer']},
+                            broadcast=True)
+
+# Socket to load the next song
+@socketio.on('load_next_song')
+def on_load_next_song():
+    if app.shared_variable['song_idx'] + 1 < NB_SONGS:
+        app.shared_variable['song_idx'] +=1
+        app.shared_variable['song'] = LST_SONG[app.shared_variable['song_idx']]
+
 
 if __name__ == '__main__':
     socketio.run(app)
