@@ -8,7 +8,7 @@
     </div>
     <form id="join-form" action="{{ url_for('room') }}">
         <input type="text" id="username" placeholder="Enter your username" required>
-        <input type="text" id="token" placeholder="Enter the host token"> 
+        <input type="text" id="token" placeholder="Enter the host token" value={{token}} > 
         <button type="submit">Join</button>
     </form>
     <button id="startButton" style="display:none;"> Start the game </button>

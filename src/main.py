@@ -10,9 +10,7 @@ socketio = SocketIO(app)
 
 # Variables
 participants = []
-tokens = []
 host_token = secrets.token_hex(16)
-print(host_token)
 
 # Routes
 @app.route('/')
@@ -21,7 +19,11 @@ def index():
 
 @app.route('/room/')
 def room():
-    return render_template('room.html')
+    if len(participants) == 0:
+        token = host_token
+    else:
+        token = ''
+    return render_template('room.html', token=token)
 
 
 # Socket for the connexion to the room
