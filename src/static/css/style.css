@@ -1,0 +1,4 @@
+#audioPlayer {
+    pointer-events: none;
+    opacity: 0;
+}
