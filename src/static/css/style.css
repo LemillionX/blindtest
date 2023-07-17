@@ -2,3 +2,10 @@
     pointer-events: none;
     opacity: 0;
 }
+
+#videoPlayer {
+    width: 640px;
+    height: 480px;
+    pointer-events: none;
+    opacity: 0;
+}

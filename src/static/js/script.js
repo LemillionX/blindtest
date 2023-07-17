@@ -1,7 +1,7 @@
 
 let socket = io();
 
-let timeOut;
+let SONG_TIMEOUT;
 
 $(document).ready(function() {
     $('#join-form').submit(function(event) {
@@ -25,7 +25,33 @@ $(document).ready(function() {
         socket.emit('check_answer', {answer: answer});
     })
 
+    $('#nextButton').click(function(song){
+        let video = document.getElementById("videoPlayer");
+        if (video.style.opacity == 0){
+            console.log("Let's see the answer");
+            socket.emit('reveal_song');            
+        } else {
+            console.log("Moving on to the next song")
+            video.pause();
+            clearTimeout(SONG_TIMEOUT);
+            video.style.opacity = 0;
+            socket.emit('next_song');
+        }
+
+    })
+
 });
+
+socket.on('song_revealed', function(song){
+    let video = document.getElementById("videoPlayer");
+    video.src = song.src;
+    video.currentTime = song.start;
+    clearTimeout(SONG_TIMEOUT);
+    video.play();
+    video.style.opacity = 100;
+    SONG_TIMEOUT = setTimeout(function(){video.pause();}, song.duration*1000);
+});
+
 
 socket.on('game_started', function(route){
     window.location.href=route;
@@ -52,10 +78,10 @@ socket.on('show_start_button', function(){
 });
 
 socket.on('song_playing', function(song) {
-    let audio = document.getElementById("audioPlayer");
+    let audio = document.getElementById("videoPlayer");
     audio.src = song.src;
     audio.currentTime = song.start;
-    clearTimeout(timeOut);
+    clearTimeout(SONG_TIMEOUT);
     audio.play();
-    timeOut = setTimeout(function(){audio.pause();}, song.duration*1000);
+    SONG_TIMEOUT = setTimeout(function(){audio.pause();}, song.duration*1000);
 });

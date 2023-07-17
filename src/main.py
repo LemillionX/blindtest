@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from flask_socketio import SocketIO, emit
-import pygame
 import secrets
 
 # Starting the app
@@ -9,14 +8,21 @@ app.config['SECRET_KEY'] = 'your_secret_key+6561€=<3'
 socketio = SocketIO(app)
 
 # Variables
-participants = []
-host_token = secrets.token_hex(16)
+PARTICIPANTS = []
+HOST_TOKEN = secrets.token_hex(16)
+NB_SONGS = 1 
+SONG_DURATION = 10
+SONG_INF = 0
+SONG_SUP = 180 - SONG_DURATION
+SONG_START = 30
 song = {
-    "src": "../static/songs/oshi-no-ko-opening01.mp3",
+    "src": "../static/songs/【推しの子】ノンクレジットオープニング｜YOASOBI「アイドル」.mp4",
     "start": 30,
     "answer": "oshi no ko"
 }
-duration = 10
+
+
+# Initilisation of the seed
 
 # Routes
 @app.route('/')
@@ -25,8 +31,8 @@ def index():
 
 @app.route('/room/')
 def room():
-    if len(participants) == 0:
-        token = host_token
+    if len(PARTICIPANTS) == 0:
+        token = HOST_TOKEN
     else:
         token = ''
     return render_template('room.html', token=token)
@@ -35,7 +41,7 @@ def room():
 def game():
     if request.method == 'POST': 
         token = request.form['token']
-        return render_template('game.html', showPlayBtn= token == host_token)
+        return render_template('game.html', showPlayBtn= token == HOST_TOKEN)
     return render_template('game.html', showPlayBtn=False)
 
 # Socket for the connexion to the room
@@ -43,10 +49,10 @@ def game():
 def on_register(data):
     username = data['username']
     token = data['token']
-    participants.append(username)
+    PARTICIPANTS.append(username)
     emit('message', f'{username} has joined the game.')
     emit('user_joined', {'username':username}, broadcast=True)
-    if token == host_token:
+    if token == HOST_TOKEN:
         emit('show_start_button')
 
 # Socket to launch the game
@@ -58,12 +64,12 @@ def on_start_game():
 @socketio.on('connect')
 def on_connect():
     emit('message', 'You are connected')
-    emit('participants', {'participants':participants})
+    emit('participants', {'participants':PARTICIPANTS})
 
 # Socket to play songs
 @socketio.on('play_song')
 def on_play_song():
-    emit('song_playing', {'src': song['src'], 'start': song['start'] , 'duration': duration}, broadcast=True)
+    emit('song_playing', {'src': song['src'], 'start': song['start'] , 'duration': SONG_DURATION}, broadcast=True)
 
 # Socket to check the answer
 @socketio.on('check_answer')
@@ -73,6 +79,11 @@ def on_check_answer(data):
         print("Correct !")
     else:
         print("Wrong !")
+
+# Socket for the reveal of the song
+@socketio.on('reveal_song')
+def on_reveal_song():
+    emit('song_revealed', {'src': song['src'], 'start': song['start'] , 'duration': 1.5*SONG_DURATION}, broadcast=True)
 
 if __name__ == '__main__':
     socketio.run(app)
