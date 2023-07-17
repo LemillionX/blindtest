@@ -28,6 +28,7 @@ $(document).ready(function() {
 
     $('#answerButton').click(function(){
         let answer = $('#answer').val();
+        document.getElementById("answer").disabled = true;
         socket.emit('check_answer', {answer: answer});
     })
 
@@ -44,6 +45,9 @@ $(document).ready(function() {
             song_container.style.opacity = 0;
             let song_name = document.getElementById("song-title");
             song_name.innerHTML = '';
+            let answer = document.getElementById("answer")
+            answer.disabled = false;
+            answer.value = '';
             socket.emit('load_next_song');
         }
 
