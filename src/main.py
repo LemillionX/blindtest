@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
 from flask_socketio import SocketIO, emit
+from waitress import serve
 import secrets
 import json
 import numpy as np
@@ -128,4 +129,8 @@ def on_load_next_song():
 
 if __name__ == '__main__':
     # socketio.run(app)
-    app.run(ssl_context='adhoc')
+    # Development server
+    # app.run(host='0.0.0.0', port=4397, ssl_context='adhoc')
+
+    # Deployment server
+    serve(app, host='0.0.0.0', port=4397)
