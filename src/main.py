@@ -9,6 +9,14 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'your_secret_key+6561€=<3'
 socketio = SocketIO(app)
 
+# Security 
+app.config.update(
+    SESSION_COOKIE_SECURE=True,
+    SESSION_COOKIE_HTTPONLY=True,
+    SESSION_COOKIE_SAMESITE='Lax',
+)
+
+
 # Variables
 app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None, 'players':{}}
 HOST_TOKEN = secrets.token_hex(16)
@@ -57,6 +65,7 @@ def on_register(data):
     emit('user_joined', {'username':username}, broadcast=True)
     if token == HOST_TOKEN:
         emit('show_start_button')
+    emit('participants', app.shared_variable["players"], broadcast=True)
 
 # Socket to launch the game
 @socketio.on('start_game')
@@ -118,4 +127,5 @@ def on_load_next_song():
         emit('game_ended', broadcast=True)
 
 if __name__ == '__main__':
-    socketio.run(app)
+    # socketio.run(app)
+    app.run(ssl_context='adhoc')
