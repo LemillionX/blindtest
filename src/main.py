@@ -130,7 +130,8 @@ def on_load_next_song():
 if __name__ == '__main__':
     # socketio.run(app)
     # Development server
-    # app.run(host='0.0.0.0', port=4397, ssl_context='adhoc')
+    # app.run(host='0.0.0.0', port=43976, ssl_context='adhoc')
 
     # Deployment server
-    serve(app, host='0.0.0.0', port=4397)
+    serve(app, host='0.0.0.0', port=43976)
+    # app.run(host='192.168.1.11', port=43976, ssl_context='adhoc')
