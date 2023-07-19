@@ -2,7 +2,6 @@
 
 {% block content %}
     <div id="participants-container">
-        Liste des participants
         <ul id="participants">
         </ul>
     </div>
@@ -11,7 +10,7 @@
         <input class="text-input" type="text" id="token" placeholder="Enter the host token" value={{token}} > 
         <button class="button" type="submit">Join</button>
     </form>
-    <form id="start-form" style="display:none;" action="{{ url_for('game') }}" method="post">
+    <form id="start-form" class="join-form" style="display:none;" action="{{ url_for('game') }}" method="post">
         <input type="text" name="token" placeholder="Enter the host token" value="{{token}}">
         <button class="host-button" id="startButton" type="submit"  > Start the game </button>
     </form>

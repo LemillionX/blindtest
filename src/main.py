@@ -19,7 +19,7 @@ app.config.update(
 
 
 # Variables
-app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None, 'players':{}}
+app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None, 'players':{}, 'hasStarted':False}
 HOST_TOKEN = secrets.token_hex(16)
 NB_SONGS = 5 
 SONG_DURATION = 10
@@ -42,7 +42,7 @@ def index():
 
 @app.route('/room/')
 def room():
-    if len(app.shared_variable["players"]) == 0 or app.shared_variable['song_idx'] == NB_SONGS-1:
+    if len(app.shared_variable["players"]) == 0:
         token = HOST_TOKEN
     else:
         token = ''
@@ -62,11 +62,13 @@ def on_register(data):
     token = data['token']
     user = {"username":username, "score":0, "status": ""}
     app.shared_variable["players"][request.cookies.get('player_id')] = user
-    emit('message', f'{username} has joined the game.')
+    print(f'{username} has joined the game.')
     emit('user_joined', {'username':username}, broadcast=True)
     if token == HOST_TOKEN:
         emit('show_start_button')
     emit('participants', app.shared_variable["players"], broadcast=True)
+    if app.shared_variable['hasStarted']:
+        emit('game_started', url_for("game"))
 
 # Socket to launch the game
 @socketio.on('start_game')
@@ -81,11 +83,11 @@ def on_start_game():
         app.shared_variable["players"][player]["score"] = 0
     emit('participants', app.shared_variable["players"], broadcast=True)
     emit('game_started', url_for("game") , broadcast=True, include_self=False)
+    app.shared_variable['hasStarted'] = True
 
 # Socket for initial connection to the server 
 @socketio.on('connect')
 def on_connect():
-    emit('message', 'You are connected')
     emit('participants', app.shared_variable["players"])
 
 # Socket to play songs
@@ -130,6 +132,7 @@ def on_load_next_song():
         emit('next_song_loaded', broadcast=True)
     else:
         emit('game_ended', broadcast=True)
+        app.shared_variable['song_idx'] = 0
     for player in app.shared_variable["players"]:
         app.shared_variable["players"][player]["status"] = ""
     emit('participants', app.shared_variable["players"], broadcast=True)

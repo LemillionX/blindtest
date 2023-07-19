@@ -22,14 +22,14 @@ $(document).ready(function() {
 
     $('#againButton').click(function(){
         socket.emit('start_game');
+        document.getElementById("answerButton").disabled = false;
+        document.getElementById("answer").disabled = false;
         $("#game-panel").show();
         $("#again").hide();
     });
 
     $('#answerButton').click(function(){
         let answer = $('#answer').val();
-        document.getElementById("answer").disabled = true;
-        document.getElementById("answerButton").disabled = true;
         socket.emit('check_answer', {answer: answer});
     })
 
@@ -79,7 +79,10 @@ socket.on('song_revealed', function(song){
 
 
 socket.on('correct_answer', function(){
+    document.getElementById("answerButton").disabled = true;
     let answer_input = document.getElementById("answer");
+    answer_input.disabled = true;
+    answer_input.classList.remove("wrong-answer");
     answer_input.classList.add('correct-answer');
     answer_input.value = answer_input.value + " "
 })
@@ -87,17 +90,13 @@ socket.on('correct_answer', function(){
 socket.on('wrong_answer', function(){
     let answer_input = document.getElementById("answer");
     answer_input.classList.add('wrong-answer');
-    answer_input.value = answer_input.value + " "
+    answer_input.value = ""
 })
 
 socket.on('game_started', function(route){
     window.location.href=route;
     $("#game-panel").show();
     $("#again").hide();
-});
-
-socket.on('message', function(data) {
-    $('#messages').append('<li>' + data + '</li>')
 });
 
 socket.on('participants', function(participants) {

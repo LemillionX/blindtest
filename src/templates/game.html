@@ -1,13 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-    <div id="participants-container">
-        <ul id="participants">
-        </ul>
-    </div>
+
     <div id="song-container">
         <h2 id="song-title"> </h2>
         <video id="videoPlayer" src="" playsinline></video>
+    </div>
+    <div id="participants-container">
+        <ul id="participants">
+        </ul>
     </div>
     <div id="game-panel">
         {% if showPlayBtn %}
@@ -15,7 +16,7 @@
         <button id="nextButton" class="button"> Next Song </button>
         {% endif %}
         <div id="answer-container">
-            <input class=" " type="text" id="answer" placeholder="Enter the title of the anime">
+            <input class=" " type="text" id="answer" placeholder="Type anime title here...">
             <button id="answerButton" class="button"> Submit </button>
         </div>
     </div>
