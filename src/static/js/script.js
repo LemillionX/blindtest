@@ -41,6 +41,7 @@ $(document).ready(function() {
             socket.emit('load_next_song');
         }
     })
+    
 });
 
 socket.on('next_song_loaded', function(){
@@ -55,6 +56,9 @@ socket.on('next_song_loaded', function(){
     document.getElementById("answerButton").disabled = false;
     answer.disabled = false;
     answer.value = '';
+    let answer_input = document.getElementById("answer");
+    answer_input.classList.remove('correct-answer');
+    answer_input.classList.remove('wrong-answer');
 })
 
 socket.on('song_revealed', function(song){
@@ -74,6 +78,18 @@ socket.on('song_revealed', function(song){
 });
 
 
+socket.on('correct_answer', function(){
+    let answer_input = document.getElementById("answer");
+    answer_input.classList.add('correct-answer');
+    answer_input.value = answer_input.value + " "
+})
+
+socket.on('wrong_answer', function(){
+    let answer_input = document.getElementById("answer");
+    answer_input.classList.add('wrong-answer');
+    answer_input.value = answer_input.value + " "
+})
+
 socket.on('game_started', function(route){
     window.location.href=route;
     $("#game-panel").show();
@@ -88,7 +104,18 @@ socket.on('participants', function(participants) {
     $('#participants').empty();
     for (let key in participants){
         let player = participants[key];
-        $('#participants').append(`<li> <div> <div> ${player.username} </div> <div> Score: ${player.score} </div> </div> </li>`);
+        let found_status;
+        switch (player.status) {
+            case "has found":
+                found_status = `<div style='color:green;'> ${player.status} </div>`;
+                break;
+            case "has not found":
+                found_status = `<div style='color:red;'> ${player.status} </div>`;
+                break;
+            default:
+                found_status = "";
+        }
+        $('#participants').append(`<li> <div class="player"> <div class="username"> ${player.username} </div> <div class="score"> Score: ${player.score} </div> ${found_status} </div> </li>`);
     }
 });
 

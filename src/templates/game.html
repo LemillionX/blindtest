@@ -2,7 +2,6 @@
 
 {% block content %}
     <div id="participants-container">
-        Liste des participants
         <ul id="participants">
         </ul>
     </div>
@@ -12,17 +11,17 @@
     </div>
     <div id="game-panel">
         {% if showPlayBtn %}
-        <button id="playButton"> Play Song </button>
-        <button id="nextButton"> Next Song </button>
+        <button id="playButton" class="button"> Play Song </button>
+        <button id="nextButton" class="button"> Next Song </button>
         {% endif %}
         <div id="answer-container">
-            <input type="text" id="answer" placeholder="Enter the title of the anime">
-            <button id="answerButton"> Submit </button>
+            <input class=" " type="text" id="answer" placeholder="Enter the title of the anime">
+            <button id="answerButton" class="button"> Submit </button>
         </div>
     </div>
     {% if showPlayBtn %}
     <div id="again" style="display:none">
-        <button id="againButton"> Start a new game </button>
+        <button id="againButton" > Start a new game </button>
     </div>
     {% endif %}
 

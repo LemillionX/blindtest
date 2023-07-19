@@ -1,86 +1,124 @@
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f2f2f2;
-    margin: 0;
-    padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #f2f2f2;
+  margin: 0;
+  padding: 20px;
+}
+
+#content {
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+justify-content: center;
 }
 
 .container {
-    max-width: 800px;
-    margin: 0 auto;
+  max-width: 800px;
+  margin: 0 auto;
 }
 
 #participants-container {
-    margin-bottom: 20px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
 }
-  
+
 #participants {
-    list-style-type: none;
-    padding: 0;
+  list-style-type: none;
+  padding: 0;
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.player {
+display: flex;
+flex-direction: column;
+flex-wrap: wrap;
+justify-content: center;
+}
+
+.username {
+display: flex;
+justify-content: center;
+}
+
+.score {
+  display: flex;
+  justify-content: center;
 }
 
 #videoPlayer {
-    width: 100%;
-    height: 360px;
-    pointer-events: none;
-    background-color: #000;
+  width: 100%;
+  height: 360px;
+  pointer-events: none;
+  background-color: #000;
 }
 
 #song-container{
-    width: 640px;
-    height: 480px;
-    opacity: 0;
-    text-align: center;
-    margin-bottom: 20px;
+  flex-wrap: wrap;
+  flex-direction: row;
+  display: flex;
+  justify-content: center;
+  width: 640px;
+  height: 480px;
+  opacity: 0;
+  text-align: center;
+  margin: 0 auto;
 }
 
 #song-title {
-    margin-top: 10px;
+  margin-top: 10px;
 }
 
 #game-panel {
-    text-align: center;
-  }
-  
-  #playButton,
-  #nextButton,
-  #answerButton {
-    background-color: #4CAF50;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    margin-right: 10px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  #playButton:hover,
-  #nextButton:hover,
-  #answerButton:hover {
-    background-color: #45a049;
-  }
-  
-  #answer-container {
-    margin-top: 20px;
-  }
-  
-  #answer {
-    padding: 10px;
-    font-size: 16px;
-    width: 250px;
-  }
-  
-  #againButton {
-    background-color: #008CBA;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    font-size: 16px;
-  }
-  
-  #againButton:hover {
-    background-color: #007a99;
-  }
-  
-  
+  text-align: center;
+}
+
+.button {
+  background-color: #4c63af;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  margin-right: 10px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.button:hover {
+  background-color: #4556a0;
+}
+
+#answer-container {
+  margin-top: 20px;
+}
+
+#answer {
+  padding: 10px;
+  font-size: 16px;
+  width: 250px;
+}
+
+.correct-answer, .correct-answer:disabled {
+  background-color: #24c52470 !important;
+}
+
+.wrong-answer, .wrong-answer:disabled {
+  background-color: #c5242470 !important;
+}
+
+#againButton {
+  background-color: #008CBA;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+#againButton:hover {
+  background-color: #007a99;
+}
+

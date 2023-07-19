@@ -60,7 +60,7 @@ def game():
 def on_register(data):
     username = data['username']
     token = data['token']
-    user = {"username":username, "score":0}
+    user = {"username":username, "score":0, "status": ""}
     app.shared_variable["players"][request.cookies.get('player_id')] = user
     emit('message', f'{username} has joined the game.')
     emit('user_joined', {'username':username}, broadcast=True)
@@ -71,7 +71,6 @@ def on_register(data):
 # Socket to launch the game
 @socketio.on('start_game')
 def on_start_game():
-    print("Starting the game...")
     app.shared_variable['song_idx'] = 0
     app.shared_variable['start'] = np.random.randint(SONG_INF, SONG_SUP, len(LST_SONG)).tolist()
     for idx, song in enumerate(LST_SONG):
@@ -105,7 +104,12 @@ def on_check_answer(data):
     answer = data['answer'].lower()
     if answer in list(map(lambda x: x.lower(), app.shared_variable['song']['answer'])):
         app.shared_variable["players"][request.cookies.get('player_id')]["score"] += 1
-        emit('participants', app.shared_variable["players"], broadcast=True) 
+        app.shared_variable["players"][request.cookies.get('player_id')]["status"] ="has found"
+        emit('correct_answer')
+    else:
+        app.shared_variable["players"][request.cookies.get('player_id')]["status"] ="has not found"
+        emit('wrong_answer')
+    emit('participants', app.shared_variable["players"], broadcast=True)
 
 # Socket for the reveal of the song
 @socketio.on('reveal_song')
@@ -126,6 +130,9 @@ def on_load_next_song():
         emit('next_song_loaded', broadcast=True)
     else:
         emit('game_ended', broadcast=True)
+    for player in app.shared_variable["players"]:
+        app.shared_variable["players"][player]["status"] = ""
+    emit('participants', app.shared_variable["players"], broadcast=True)
 
 if __name__ == '__main__':
     # socketio.run(app)
@@ -133,5 +140,5 @@ if __name__ == '__main__':
     # app.run(host='0.0.0.0', port=43976, ssl_context='adhoc')
 
     # Deployment server
-    serve(app, host='0.0.0.0', port=43976)
-    # app.run(host='192.168.1.11', port=43976, ssl_context='adhoc')
+    # serve(app, host='127.0.0.1', port=43976)
+    app.run(host='192.168.1.11', port=43976, debug=True)
