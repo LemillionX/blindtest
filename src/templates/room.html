@@ -7,12 +7,12 @@
         </ul>
     </div>
     <form id="join-form" action="{{ url_for('room') }}" method="post">
-        <input type="text" id="username" placeholder="Enter your username" required>
-        <input type="text" id="token" placeholder="Enter the host token" value={{token}} > 
-        <button type="submit">Join</button>
+        <input class="text-input" type="text" id="username" placeholder="Enter your username" required>
+        <input class="text-input" type="text" id="token" placeholder="Enter the host token" value={{token}} > 
+        <button class="button" type="submit">Join</button>
     </form>
     <form id="start-form" style="display:none;" action="{{ url_for('game') }}" method="post">
         <input type="text" name="token" placeholder="Enter the host token" value="{{token}}">
-        <button id="startButton" type="submit"  > Start the game </button>
+        <button class="host-button" id="startButton" type="submit"  > Start the game </button>
     </form>
 {% endblock %}

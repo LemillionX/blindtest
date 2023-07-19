@@ -117,7 +117,7 @@ def on_reveal_song():
     emit('song_revealed', { 'src': app.shared_variable['song']['src'],
                             'start': app.shared_variable['song']['start'],
                             'duration': 1.5*SONG_DURATION,
-                            'name': app.shared_variable['song']['answer']
+                            'name': " / ".join(app.shared_variable['song']['answer'])
                             },
                             broadcast=True)
 
