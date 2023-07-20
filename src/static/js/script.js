@@ -7,6 +7,7 @@ let GUESS_INTERVAL;
 let HAS_STARTED_GUESSING = false;
 let TIME_DISPLAY ="";
 let HAS_FOUND = false;
+let TIME_PENALTY = "TIME_PENALTY";
 
 function check_answer(){
     let answer = $('#answer').val();
@@ -112,7 +113,7 @@ socket.on('wrong_answer', function(){
     if (!HAS_FOUND && parseInt(TIME_DISPLAY) <= 0 ){
         answer_input.disabled = true;
     }
-    socket.emit('time_decreasing', {key:localStorage.getItem('CLIENT_KEY'), time:5});
+    socket.emit('time_decreasing', {key:localStorage.getItem('CLIENT_KEY'), time:TIME_PENALTY});
     
     answer_input.classList.add('wrong-answer');
     answer_input.value = "";
