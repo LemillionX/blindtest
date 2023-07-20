@@ -105,8 +105,8 @@ def on_play_song():
 # Socket to check the answer
 @socketio.on('check_answer')
 def on_check_answer(data):
-    answer = data['answer'].lower()
-    if answer in list(map(lambda x: x.lower(), app.shared_variable['song']['answer'])):
+    answer = data['answer'].lower().strip()
+    if answer in list(map(lambda x: x.lower().strip(), app.shared_variable['song']['answer'])):
         app.shared_variable["players"][request.cookies.get('player_id')]["score"] += 1
         app.shared_variable["players"][request.cookies.get('player_id')]["status"] ="has found"
         emit('correct_answer')
