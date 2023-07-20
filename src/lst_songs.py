@@ -17,5 +17,6 @@ for anime in anime_list:
             'answer': anime.split("-")
         })
 
+print(f"{len(song_list['songs'])} songs found !")
 with open(r"./static/songs/songs.json", "w", encoding='utf8') as output:
     json.dump(song_list, output, indent=4, ensure_ascii=False)

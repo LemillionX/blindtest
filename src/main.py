@@ -1,9 +1,9 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
 from flask_socketio import SocketIO, emit
-from waitress import serve
 import secrets
 import json
 import numpy as np
+import sys
 
 # Starting the app
 app = Flask(__name__)
@@ -21,7 +21,7 @@ app.config.update(
 # Variables
 app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None, 'players':{}, 'hasStarted':False}
 HOST_TOKEN = secrets.token_hex(16)
-NB_SONGS = 5 
+NB_SONGS = 30 
 SONG_DURATION = 10
 SONG_INF = 0
 SONG_SUP = max(90 - SONG_DURATION, SONG_INF + SONG_DURATION)
@@ -29,6 +29,7 @@ SONG_START = 30
 LST_SONG = {}
 with open('./static/songs/songs.json', 'r', encoding='utf-8') as file:
     LST_SONG = json.load(file)['songs']
+print(f"You have {len(LST_SONG)} songs.")
 
 # Routes
 @app.route('/')
@@ -93,7 +94,6 @@ def on_connect():
 # Socket to play songs
 @socketio.on('play_song')
 def on_play_song():
-    print(f"Now playing : {app.shared_variable['song']}")
     emit('song_playing', {  'src': app.shared_variable['song']['src'],
                             'start': app.shared_variable['song']['start'],
                             'duration': SONG_DURATION
@@ -138,6 +138,11 @@ def on_load_next_song():
     emit('participants', app.shared_variable["players"], broadcast=True)
 
 if __name__ == '__main__':
-    # socketio.run(app)
-    # serve(app, host='127.0.0.1', port=43976)
-    app.run(host='192.168.1.11', port=43976, debug=True)
+    if len(sys.argv) == 1 or len(sys.argv) > 2:
+        print("You need to enter the port number where to run the app. Run main.py -h for more details")
+
+    if len(sys.argv) == 2:
+        if sys.argv[1] in ['-h', '--help']:
+            print('To launch the app, run: \t main.py <port> \n where <port> is the number of the port where you want to launch the server')
+        else:
+            app.run(host='127.0.0.1', port=int(sys.argv[1]))
