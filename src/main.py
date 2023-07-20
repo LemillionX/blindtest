@@ -21,11 +21,12 @@ app.config.update(
 # Variables
 app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None, 'players':{}, 'hasStarted':False}
 HOST_TOKEN = secrets.token_hex(16)
-NB_SONGS = 30 
+NB_SONGS = 3 
 SONG_DURATION = 10
 SONG_INF = 0
 SONG_SUP = max(90 - SONG_DURATION, SONG_INF + SONG_DURATION)
 SONG_START = 30
+GUESS_DURATION = 15
 LST_SONG = {}
 with open('./static/songs/songs.json', 'r', encoding='utf-8') as file:
     LST_SONG = json.load(file)['songs']
@@ -61,10 +62,10 @@ def game():
 def on_register(data):
     username = data['username']
     token = data['token']
-    user = {"username":username, "score":0, "status": ""}
+    user = {"username":username, "score":0, "status": "", "timer": GUESS_DURATION}
     app.shared_variable["players"][request.cookies.get('player_id')] = user
     print(f'{username} has joined the game.')
-    emit('user_joined', {'username':username}, broadcast=True)
+    emit('user_joined', {'username':username, 'key':request.cookies.get('player_id')}, broadcast=True)
     if token == HOST_TOKEN:
         emit('show_start_button')
     emit('participants', app.shared_variable["players"], broadcast=True)
@@ -135,6 +136,14 @@ def on_load_next_song():
         app.shared_variable['song_idx'] = 0
     for player in app.shared_variable["players"]:
         app.shared_variable["players"][player]["status"] = ""
+        app.shared_variable["players"][player]["timer"] = GUESS_DURATION
+    emit('participants', app.shared_variable["players"], broadcast=True)
+
+
+# Socket for time decreasing
+@socketio.on('time_decreasing')
+def on_time_decreasing(data):
+    app.shared_variable["players"][data["key"]]["timer"] = max(0, app.shared_variable["players"][data["key"]]["timer"] - int(data["time"]))
     emit('participants', app.shared_variable["players"], broadcast=True)
 
 if __name__ == '__main__':
