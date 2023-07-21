@@ -63,7 +63,7 @@ def game():
 def on_register(data):
     username = data['username']
     token = data['token']
-    user = {"username":username, "score":0, "status": "", "timer": TIME_GUESS}
+    user = {"username":username, "score":0, "status": "", "timer": TIME_GUESS, 'hasJoined':False}
     app.shared_variable["players"][request.cookies.get('player_id')] = user
     print(f'{username} has joined the game.')
     emit('user_joined', {'username':username, 'key':request.cookies.get('player_id')}, broadcast=True)
@@ -91,7 +91,20 @@ def on_start_game():
 # Socket for initial connection to the server 
 @socketio.on('connect')
 def on_connect():
+    player = app.shared_variable["players"].get(request.cookies.get('player_id'))
+    if (player is not None) and (not player['hasJoined']):
+        app.shared_variable["players"][request.cookies.get('player_id')]['hasJoined'] = True
     emit('participants', app.shared_variable["players"])
+
+# Socket for disconnection
+@socketio.on('disconnect')
+def on_disconnect():
+    print(f"{request.cookies.get('player_id')} left the room")
+    if app.shared_variable["players"][request.cookies.get('player_id')]['hasJoined']:
+        app.shared_variable['players'].pop(request.cookies.get('player_id'))
+    if len(app.shared_variable['players']) == 0:
+        app.shared_variable['hasStarted'] = False
+    emit('participants', app.shared_variable["players"], broadcast=True)
 
 # Socket to play songs
 @socketio.on('play_song')
