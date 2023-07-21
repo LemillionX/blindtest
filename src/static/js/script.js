@@ -20,8 +20,8 @@ $(document).ready(function() {
         event.preventDefault();
         let username = $('#username').val();
         let token = $('#token').val();
-        socket.emit('register', {username: username, token: token});
         $('#join-form').hide();
+        socket.emit('register', {username: username, token: token});
     });
 
     $('#playButton').click(function(){
@@ -33,15 +33,16 @@ $(document).ready(function() {
     });
 
     $('#againButton').click(function(){
-        socket.emit('start_game');
         document.getElementById("answerButton").disabled = false;
         let answer = document.getElementById("answer");
         answer.disabled = false;
         answer.classList.remove('correct-answer');
         answer.classList.remove('wrong-answer');
         answer.value = '';
+        HAS_STARTED_GUESSING = false;
         $("#game-panel").show();
         $("#again").hide();
+        socket.emit('start_game');
     });
 
     $('#answerButton').click(function(){
@@ -56,8 +57,13 @@ $(document).ready(function() {
         } else {
             socket.emit('load_next_song');
         }
-    })
+    }) 
     
+    $('#answer').on('keypress', function(event){
+        if (event.keyCode == 13){
+            check_answer();
+        }
+    });
 });
 
 socket.on('next_song_loaded', function(){
@@ -112,11 +118,10 @@ socket.on('wrong_answer', function(){
 
     if (!HAS_FOUND && parseInt(TIME_DISPLAY) <= 0 ){
         answer_input.disabled = true;
-    }
-    socket.emit('time_decreasing', {key:localStorage.getItem('CLIENT_KEY'), time:TIME_PENALTY});
-    
+    }   
     answer_input.classList.add('wrong-answer');
     answer_input.value = "";
+    socket.emit('time_decreasing', {key:localStorage.getItem('CLIENT_KEY'), time:TIME_PENALTY});
 })
 
 socket.on('game_started', function(route){
@@ -126,6 +131,7 @@ socket.on('game_started', function(route){
     answer.classList.remove('wrong-answer');
     answer.disabled = false;
     answer.value = '';
+    HAS_STARTED_GUESSING = false;
     $("#game-panel").show();
     $("#again").hide();
 });
@@ -157,7 +163,7 @@ socket.on('participants', function(participants) {
                     <div class="username"> ${player.username} </div>
                     <div class="score"> Score: ${player.score} </div> 
                     <div id='${key}-timer'> Time left: ${TIME_DISPLAY} s </div>
-                    <div> ${found_status}</div>
+                    <div class="fouind-status" > ${found_status}</div>
                 </div>
             </li>`);
     }
@@ -182,7 +188,6 @@ socket.on('song_playing', function(song) {
     if (!HAS_STARTED_GUESSING){
         HAS_STARTED_GUESSING = true;
         decrease_time(1);
-        console.log("Timer starts now !");
     }
 });
 
@@ -199,13 +204,11 @@ function decrease_time(timestep){
     GUESS_INTERVAL = setInterval(function(){
         let current_timer = document.getElementById(`${localStorage.getItem('CLIENT_KEY')}-timer`);
         if (parseInt(TIME_DISPLAY) == 0 ){
-            console.log("Timer ended !");
             current_timer.innerHTML = `Time left: ${TIME_DISPLAY} s`;
             document.getElementById("answer").disabled = true;
             clearInterval(GUESS_INTERVAL);
             check_answer();
         } else {
-            console.log('Time is decreasing...');
             socket.emit('time_decreasing', {key:localStorage.getItem('CLIENT_KEY'), time:timestep});
         }
     }, 1000);

@@ -84,6 +84,11 @@ font-weight: bold;
   justify-content: center;
 }
 
+.found-status {
+  display: flex;
+  justify-content: center;
+}
+
 #videoPlayer {
   width: 100%;
   height: 360px;
