@@ -26,7 +26,7 @@ SONG_DURATION = 10
 SONG_INF = 0
 SONG_SUP = max(90 - SONG_DURATION, SONG_INF + SONG_DURATION)
 SONG_START = 30
-TIME_GUESS = 15
+TIME_GUESS = 40
 TIME_PENALTY = 5
 LST_SONG = {}
 with open('./static/songs/songs.json', 'r', encoding='utf-8') as file:
@@ -66,7 +66,7 @@ def on_register(data):
     user = {"username":username, "score":0, "status": "", "timer": TIME_GUESS, 'hasJoined':False}
     app.shared_variable["players"][request.cookies.get('player_id')] = user
     print(f'{username} has joined the game.')
-    emit('user_joined', {'username':username, 'key':request.cookies.get('player_id')}, broadcast=True)
+    emit('user_joined', {'username':username, 'key':request.cookies.get('player_id')})
     if token == HOST_TOKEN:
         emit('show_start_button')
     emit('participants', app.shared_variable["players"], broadcast=True)
@@ -85,7 +85,7 @@ def on_start_game():
     for player in app.shared_variable["players"]:
         app.shared_variable["players"][player]["score"] = 0
     emit('participants', app.shared_variable["players"], broadcast=True)
-    emit('game_started', url_for("game") , broadcast=True, include_self=False)
+    emit('game_started', {'route':url_for("game"), 'game_started':app.shared_variable['hasStarted']} , broadcast=True, include_self=False)
     app.shared_variable['hasStarted'] = True
 
 # Socket for initial connection to the server 

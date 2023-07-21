@@ -108,7 +108,7 @@ socket.on('correct_answer', function(){
     answer_input.disabled = true;
     answer_input.classList.remove("wrong-answer");
     answer_input.classList.add('correct-answer');
-    answer_input.value = answer_input.value + " "
+    answer_input.value = "";
     HAS_FOUND = true;
     clearInterval(GUESS_INTERVAL);
 })
@@ -124,8 +124,10 @@ socket.on('wrong_answer', function(){
     socket.emit('time_decreasing', {key:localStorage.getItem('CLIENT_KEY'), time:TIME_PENALTY});
 })
 
-socket.on('game_started', function(route){
-    window.location.href=route;
+socket.on('game_started', function(data){
+    if (!data.game_started){
+        window.location.href=data.route;
+    }
     let answer = document.getElementById("answer")
     answer.classList.remove('correct-answer');
     answer.classList.remove('wrong-answer');
