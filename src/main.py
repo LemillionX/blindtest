@@ -26,7 +26,7 @@ SONG_DURATION = 10
 SONG_INF = 0
 SONG_SUP = max(90 - SONG_DURATION, SONG_INF + SONG_DURATION)
 SONG_START = 30
-TIME_GUESS = 40
+TIME_GUESS = 30
 TIME_PENALTY = 5
 LST_SONG = {}
 with open('./static/songs/songs.json', 'r', encoding='utf-8') as file:
@@ -99,9 +99,10 @@ def on_connect():
 # Socket for disconnection
 @socketio.on('disconnect')
 def on_disconnect():
-    print(f"{request.cookies.get('player_id')} left the room")
-    if app.shared_variable["players"][request.cookies.get('player_id')]['hasJoined']:
-        app.shared_variable['players'].pop(request.cookies.get('player_id'))
+    player = request.cookies.get('player_id')
+    print(f"{player} left the room")
+    if (app.shared_variable["players"].get(player) is not None) and (app.shared_variable["players"][player]['hasJoined']):
+        app.shared_variable['players'].pop(player)
     if len(app.shared_variable['players']) == 0:
         app.shared_variable['hasStarted'] = False
     emit('participants', app.shared_variable["players"], broadcast=True)

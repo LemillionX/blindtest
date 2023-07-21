@@ -164,8 +164,8 @@ socket.on('participants', function(participants) {
                 <div class="player">
                     <div class="username"> ${player.username} </div>
                     <div class="score"> Score: ${player.score} </div> 
+                    <div class="found-status" > ${found_status}</div>
                     <div id='${key}-timer'> Time left: ${TIME_DISPLAY} s </div>
-                    <div class="fouind-status" > ${found_status}</div>
                 </div>
             </li>`);
     }
