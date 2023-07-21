@@ -54,5 +54,5 @@ You can use ``lst_songs.py`` to automatically build the file ``./static/songs/so
 ### v0.1
 Works using ``ngrok`` and ``localhost`` if there is no device with a slow interaction (e.g. web browser too slow to load) <br>
 Caps don't matter <br>
-No ``:`` or ``-`` will be lead to a valid answer if you use ``lst_songs.py`` to create your songlist <br>
+No ``:`` or ``-`` will lead to a valid answer if you use ``lst_songs.py`` to create your songlist <br>
 Can submit multiple answer until you find the correct one <br>
