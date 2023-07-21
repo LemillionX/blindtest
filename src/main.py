@@ -21,7 +21,7 @@ app.config.update(
 # Variables
 app.shared_variable = {'song_idx':0, 'indices': [], 'start': [],  'song': None, 'players':{}, 'hasStarted':False}
 HOST_TOKEN = secrets.token_hex(16)
-NB_SONGS = 3 
+NB_SONGS = 30 
 SONG_DURATION = 10
 SONG_INF = 0
 SONG_SUP = max(90 - SONG_DURATION, SONG_INF + SONG_DURATION)
@@ -80,7 +80,7 @@ def on_start_game():
     app.shared_variable['start'] = np.random.randint(SONG_INF, SONG_SUP, len(LST_SONG)).tolist()
     for idx, song in enumerate(LST_SONG):
         song['start'] = app.shared_variable['start'][idx]
-    app.shared_variable['indices'] = np.random.choice(np.arange(len(LST_SONG)), size=NB_SONGS, replace=False).tolist()
+    app.shared_variable['indices'] = np.random.choice(len(LST_SONG), size=NB_SONGS, replace=False).tolist()
     app.shared_variable['song'] = LST_SONG[app.shared_variable['indices'][app.shared_variable['song_idx']]]
     for player in app.shared_variable["players"]:
         app.shared_variable["players"][player]["score"] = 0
@@ -172,4 +172,4 @@ if __name__ == '__main__':
         if sys.argv[1] in ['-h', '--help']:
             print('To launch the app, run: \t main.py <port> \n where <port> is the number of the port where you want to launch the server')
         else:
-            app.run(host='127.0.0.1', port=int(sys.argv[1]))
+            app.run(host='0.0.0.0', port=int(sys.argv[1]))
