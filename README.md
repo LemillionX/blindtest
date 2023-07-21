@@ -52,7 +52,7 @@ You can use ``lst_songs.py`` to automatically build the file ``./static/songs/so
 
 
 ### v0.1
-<li> Works using ``ngrok`` and ``localhost`` if there is no device with a slow interaction (e.g. web browser too slow to load)
-<li> Caps don't matter
-<li> No ``:`` or ``-`` will be lead to a valid answer if you use ``lst_songs.py`` to create your songlist
-<li> Can submit multiple answer until you find the correct one
+Works using ``ngrok`` and ``localhost`` if there is no device with a slow interaction (e.g. web browser too slow to load) <br>
+Caps don't matter <br>
+No ``:`` or ``-`` will be lead to a valid answer if you use ``lst_songs.py`` to create your songlist <br>
+Can submit multiple answer until you find the correct one <br>
