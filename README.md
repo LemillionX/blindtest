@@ -44,12 +44,16 @@ You can use ``lst_songs.py`` to automatically build the file ``./static/songs/so
 
 ## Updates
 ### TO DO
-<li> Add a timer and a penalty system
-<li> Trim answer to remove space at the beginning and at the end
-<li> Enable `Enter` key for submission
-<li> Remove user when the tab is closed/disconnected
+<li> Fix blocking bug if timer of the last player is zero
 <li> Add a time based score
 
+
+### v0.2
+Add a timer and a penalty system <br>
+Trim answer to remove space at the beginning and at the end <br>
+Enable `Enter` key for submission <br>
+Remove user when the tab is closed/disconnected <br>
+When using ``lst_songs.py``, you can now set a limit per anime <br>
 
 ### v0.1
 Works using ``ngrok`` and ``localhost`` if there is no device with a slow interaction (e.g. web browser too slow to load) <br>
