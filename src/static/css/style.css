@@ -13,7 +13,7 @@ body::after {
   outline: 10px solid white;
   content: "";
   opacity: 0.5;
-  position: absolute;
+  position: fixed;
   top: 0;
   bottom: 0;
   right: 0;
@@ -22,15 +22,11 @@ body::after {
 }
 
 .content {
-  position: absolute;
   display: flex;
   flex-direction: column;
   flex-wrap: wrap;
   justify-content: center;
   margin: 0 auto;
-  top: 40%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 
 .container {
@@ -117,7 +113,7 @@ font-weight: bold;
   height: 480px;
   opacity: 0;
   text-align: center;
-  margin: 0 auto;
+  margin: 20px auto;
   background-color: white;
   padding: 20px;
   border-radius: 10px;
@@ -189,3 +185,105 @@ font-weight: bold;
   justify-content: center;
 }
 
+@media screen and (max-width: 768px) {
+
+  #song-container {
+    flex-wrap: wrap;
+    flex-direction: row;
+    display: flex;
+    justify-content: center;
+    width: 640px;
+    height: 480px;
+    opacity: 0;
+    text-align: center;
+    margin: 20px auto;
+    background-color: white;
+    padding: 25px;
+    padding-bottom: 15vw;
+    border-radius: 10px;
+  }
+
+  #song-title {
+    margin-top: 10px;
+    font-size: 5vw;
+  }
+
+  #videoPlayer {
+    width: 100%;
+    pointer-events: none;
+    background-color: #000;
+  }
+
+  .player {
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    font-size: 3vw;
+  }
+
+  #counter {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    background-color: #2a364b;
+    border-radius: 25px;
+    margin: 0 auto;
+    padding: 12px;
+    opacity: 0;
+    color: white;
+    font-size: 3vw;
+  }
+
+  #game-panel {
+    text-align: center;
+    background-color: rgb(40, 50, 73);
+    padding: 20px;
+    border-radius: 10px;
+    width: 90vw;
+    margin: 10px auto;
+  }
+
+  .button {
+    background-color: #4c63af;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    margin-top: 2vw;
+    margin-right: 10px;
+    cursor: pointer;
+    font-size: 4vw;
+    border-radius: 5px;
+    width: 50vw;
+    height: 10vw;
+  }
+
+  #answer-container {
+    margin-top: 2vw;
+    margin-bottom: 2vw;
+  }
+
+  #answer, .text-input {
+    padding: 10px;
+    font-size: 4vw;
+    width: 85vw;
+    height: 5vw;
+  }
+
+  .host-button {
+    background-color: #008CBA;
+    color: white;
+    border: none;
+    padding: 20px 20px;
+    cursor: pointer;
+    font-size: 4vw;
+    border-radius: 5px;
+    margin: 0 auto;
+    width: 50vw;
+    height: 10vw;
+  }
+
+}
