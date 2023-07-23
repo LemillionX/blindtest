@@ -222,7 +222,7 @@ font-weight: bold;
     background-color: white;
     padding: 20px;
     border-radius: 10px;
-    font-size: 3vw;
+    font-size: 5vw;
   }
 
   #counter {
@@ -251,11 +251,11 @@ font-weight: bold;
     background-color: #4c63af;
     color: white;
     border: none;
-    padding: 10px 20px;
-    margin-top: 2vw;
+    padding: 0px 20px;
+    margin-top: 5vw;
     margin-right: 10px;
     cursor: pointer;
-    font-size: 4vw;
+    font-size: 5vw;
     border-radius: 5px;
     width: 50vw;
     height: 10vw;
@@ -268,7 +268,7 @@ font-weight: bold;
 
   #answer, .text-input {
     padding: 10px;
-    font-size: 4vw;
+    font-size: 5vw;
     width: 85vw;
     height: 5vw;
   }
