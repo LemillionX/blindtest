@@ -96,16 +96,16 @@ def on_connect():
         app.shared_variable["players"][request.cookies.get('player_id')]['hasJoined'] = True
     emit('participants', app.shared_variable["players"])
 
-# Socket for disconnection
-@socketio.on('disconnect')
-def on_disconnect():
-    player = request.cookies.get('player_id')
-    print(f"{player} left the room")
-    if (app.shared_variable["players"].get(player) is not None) and (app.shared_variable["players"][player]['hasJoined']):
-        app.shared_variable['players'].pop(player)
-    if len(app.shared_variable['players']) == 0:
-        app.shared_variable['hasStarted'] = False
-    emit('participants', app.shared_variable["players"], broadcast=True)
+# # Socket for disconnection
+# @socketio.on('disconnect')
+# def on_disconnect():
+#     player = request.cookies.get('player_id')
+#     print(f"{player} left the room")
+#     if (app.shared_variable["players"].get(player) is not None) and (app.shared_variable["players"][player]['hasJoined']):
+#         app.shared_variable['players'].pop(player)
+#     if len(app.shared_variable['players']) == 0:
+#         app.shared_variable['hasStarted'] = False
+#     emit('participants', app.shared_variable["players"], broadcast=True)
 
 # Socket to play songs
 @socketio.on('play_song')
@@ -145,7 +145,7 @@ def on_load_next_song():
     if app.shared_variable['song_idx'] + 1 < NB_SONGS:
         app.shared_variable['song_idx'] +=1
         app.shared_variable['song'] = LST_SONG[app.shared_variable['indices'][app.shared_variable['song_idx']]]
-        emit('next_song_loaded', broadcast=True)
+        emit('next_song_loaded', {'current_song':app.shared_variable['song_idx']+1, 'nb_songs':NB_SONGS }, broadcast=True)
     else:
         emit('game_ended', broadcast=True)
         app.shared_variable['song_idx'] = 0
@@ -172,4 +172,4 @@ if __name__ == '__main__':
         if sys.argv[1] in ['-h', '--help']:
             print('To launch the app, run: \t main.py <port> \n where <port> is the number of the port where you want to launch the server')
         else:
-            app.run(host='0.0.0.0', port=int(sys.argv[1]))
+            app.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)

@@ -45,6 +45,7 @@ You can use ``lst_songs.py`` to automatically build the file ``./static/songs/so
 ## Updates
 ### TO DO
 <li> Fix blocking bug if timer of the last player is zero
+<li> Add song counter
 <li> Add a time based score
 
 

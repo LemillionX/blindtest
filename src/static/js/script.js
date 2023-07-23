@@ -66,15 +66,18 @@ $(document).ready(function() {
     });
 });
 
-socket.on('next_song_loaded', function(){
-    let song_container = document.getElementById("song-container")
+socket.on('next_song_loaded', function(data){
+    let counter = document.getElementById("counter");
+    counter.style.opacity = 100;
+    counter.innerHTML = `${data.current_song}/${data.nb_songs}` ;
+    let song_container = document.getElementById("song-container");
     let video = document.getElementById("videoPlayer");
     video.pause();
     clearTimeout(SONG_TIMEOUT);
     song_container.style.opacity = 0;
     let song_name = document.getElementById("song-title");
     song_name.innerHTML = '';
-    let answer = document.getElementById("answer")
+    let answer = document.getElementById("answer");
     answer.classList.remove('correct-answer');
     answer.classList.remove('wrong-answer');
     answer.disabled = false;
@@ -88,7 +91,6 @@ socket.on('next_song_loaded', function(){
 socket.on('song_revealed', function(song){
     document.getElementById("answer").disabled = true;
     document.getElementById("answerButton").disabled = true;
-    
     let song_container = document.getElementById("song-container")
     let video = document.getElementById("videoPlayer");
     let song_name = document.getElementById("song-title");
