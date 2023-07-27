@@ -17,11 +17,11 @@ for anime in anime_list:
     for song in song_files:
         song_list["songs"].append({
             'src': "."+song.replace("\\", "/"),
-            'answer': anime.split("-")
+            'answer': anime.split("_")
         })
 
 print(f"There are {len(anime_list)} anime !")
-np.savetxt("anime_list.txt", anime_list, delimiter='\n', fmt='%s')
+np.savetxt("anime_list.txt", np.char.replace(anime_list, '_', ' / '), delimiter='\n', fmt='%s')
 
 print(f"{len(song_list['songs'])} songs found !")
 with open(r"./static/songs/songs.json", "w", encoding='utf8') as output:
