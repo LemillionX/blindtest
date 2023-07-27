@@ -4,6 +4,7 @@ import secrets
 import json
 import numpy as np
 import sys
+import Levenshtein
 
 # Starting the app
 app = Flask(__name__)
@@ -28,6 +29,7 @@ SONG_SUP = max(90 - SONG_DURATION, SONG_INF + SONG_DURATION)
 SONG_START = 30
 TIME_GUESS = 30
 TIME_PENALTY = 4
+TOLERANCE = 3
 LST_SONG = {}
 with open('./static/songs/songs.json', 'r', encoding='utf-8') as file:
     LST_SONG = json.load(file)['songs']
@@ -96,16 +98,16 @@ def on_connect():
         app.shared_variable["players"][request.cookies.get('player_id')]['hasJoined'] = True
     emit('participants', app.shared_variable["players"])
 
-# # Socket for disconnection
-# @socketio.on('disconnect')
-# def on_disconnect():
-#     player = request.cookies.get('player_id')
-#     print(f"{player} left the room")
-#     if (app.shared_variable["players"].get(player) is not None) and (app.shared_variable["players"][player]['hasJoined']):
-#         app.shared_variable['players'].pop(player)
-#     if len(app.shared_variable['players']) == 0:
-#         app.shared_variable['hasStarted'] = False
-#     emit('participants', app.shared_variable["players"], broadcast=True)
+# Socket for disconnection
+@socketio.on('disconnect')
+def on_disconnect():
+    player = request.cookies.get('player_id')
+    print(f"{player} left the room")
+    if (app.shared_variable["players"].get(player) is not None) and (app.shared_variable["players"][player]['hasJoined']):
+        app.shared_variable['players'].pop(player)
+    if len(app.shared_variable['players']) == 0:
+        app.shared_variable['hasStarted'] = False
+    emit('participants', app.shared_variable["players"], broadcast=True)
 
 # Socket to play songs
 @socketio.on('play_song')
@@ -120,7 +122,8 @@ def on_play_song():
 @socketio.on('check_answer')
 def on_check_answer(data):
     answer = data['answer'].lower().strip()
-    if answer in list(map(lambda x: x.lower().strip(), app.shared_variable['song']['answer'])):
+    distance_lst = np.array([Levenshtein.distance(answer, song) for song in list(map(lambda x: x.lower().strip(), app.shared_variable['song']['answer']))])
+    if np.min(distance_lst) < TOLERANCE:
         app.shared_variable["players"][request.cookies.get('player_id')]["score"] += 1
         app.shared_variable["players"][request.cookies.get('player_id')]["status"] ="has found"
         emit('correct_answer')
