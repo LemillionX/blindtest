@@ -87,7 +87,7 @@ You can use ``lst_songs.py`` to automatically build the file ``./static/songs/so
 ### v0.3
 Add song counter <br>
 Add a metric to limit spelling mistakes' influence <br>
-Replace ``-`` by ``_`` so that ``-`` can be used <br>
+Replace ``-`` by ``_`` so that ``-`` can be used with ``lst_songs.py``<br>
 
 ### v0.2
 Add a timer and a penalty system <br>
