@@ -3,7 +3,7 @@ This project was made for fun and also as an opportunity to learn how to use ``F
 
 ## In-Game
 ### Launching
-Run ``main.py <port> `` to launch the app on the port ``<port>``. Then access the URL of the app. You should land on the index page where you can enter the room:
+Run ``./src/main.py <port> `` to launch the app on the port ``<port>``. Then access the URL of the app. You should land on the index page where you can enter the room:
 <div style="text-align:center">
     <img src=./img/index.png width="400">
 </div>
