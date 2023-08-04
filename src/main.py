@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, make_response
+from flask import Flask, render_template, request, url_for, make_response
 from flask_socketio import SocketIO, emit
 import secrets
 import json

@@ -5,6 +5,12 @@ This project was made for fun and also as an opportunity to learn how to use ``F
 ### Server
 Server-side is handled in ``main.py``. 
 You need to add a file ``config.json`` to define a ``SECRET_KEY`` and an ``IP_ADDRESS`` for the server.
+```
+{
+    "SECRET_KEY": "your_secret_key",
+    "IP_ADDRESS": "127.0.0.1"
+}
+```
 There are three routes: <br>
  ``/``: the ``index.html`` route that asks confirmation for entering the ``/room/`` route <br>
 ``room``: the form to type the username and to join the game <br>
@@ -47,12 +53,13 @@ You can use ``lst_songs.py`` to automatically build the file ``./static/songs/so
 ## Updates
 ### TO DO
 <li> Fix blocking bug if timer of the last player is zero
-<li> Add song counter
-<li> Add a distance to limit spelling mistakes' influence
 <li> Add a channel where you can see all submitted answers if you have found 
-<li> Replace ``-`` by ``_`` so that ``-`` can be used 
 <li> Add a time based score
 
+### v0.3
+Add song counter <br>
+Add a metric to limit spelling mistakes' influence <br>
+Replace ``-`` by ``_`` so that ``-`` can be used <br>
 
 ### v0.2
 Add a timer and a penalty system <br>
