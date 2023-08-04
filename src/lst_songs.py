@@ -1,12 +1,11 @@
 import os
-import json 
+import json
 import numpy as np
 
 PATH = r"./static/songs"
 LIMIT_PER_ANIME = 3
 
-song_list = {}
-song_list["songs"] = []
+song_list = {"songs": []}
 anime_list = [d for d in os.listdir(PATH) if os.path.isdir(os.path.join(PATH,d))]
 
 for anime in anime_list:

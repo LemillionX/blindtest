@@ -3,7 +3,9 @@ This project was made for fun and also as an opportunity to learn how to use ``F
 
 ## Structure
 ### Server
-Server-side is handled in ``main.py``. There are three routes: <br>
+Server-side is handled in ``main.py``. 
+You need to add a file ``config.json`` to define a ``SECRET_KEY`` and an ``IP_ADDRESS`` for the server.
+There are three routes: <br>
  ``/``: the ``index.html`` route that asks confirmation for entering the ``/room/`` route <br>
 ``room``: the form to type the username and to join the game <br>
 ``game``: the game itself where you can submit answer <br>

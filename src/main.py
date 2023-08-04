@@ -8,7 +8,8 @@ import Levenshtein
 
 # Starting the app
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key+6561€=<3'
+with open('./config.json', encoding='utf-8') as config:
+    app.config['SECRET_KEY'] = json.load(config)['SECRET_KEY']
 socketio = SocketIO(app)
 
 # Security 
@@ -38,19 +39,14 @@ print(f"You have {len(LST_SONG)} songs.")
 # Routes
 @app.route('/')
 def index():
-    player_id = request.cookies.get("player_id")
-    if not player_id:
-        player_id = secrets.token_hex(16)
+    player_id = request.cookies.get("player_id") or secrets.token_hex(16)
     resp = make_response(render_template('index.html'))
     resp.set_cookie("player_id", player_id)
     return resp
 
 @app.route('/room/')
 def room():
-    if len(app.shared_variable["players"]) == 0:
-        token = HOST_TOKEN
-    else:
-        token = ''
+    token = HOST_TOKEN if len(app.shared_variable["players"]) == 0 else ''
     return render_template('room.html', token=token)
 
 @app.route('/game/', methods=['POST', 'GET'])
@@ -175,4 +171,5 @@ if __name__ == '__main__':
         if sys.argv[1] in ['-h', '--help']:
             print('To launch the app, run: \t main.py <port> \n where <port> is the number of the port where you want to launch the server')
         else:
-            app.run(host='0.0.0.0', port=int(sys.argv[1]), debug=True)
+            with open('./config.json', encoding='utf-8') as config:
+                app.run(host=json.load(config)["IP_ADDRESS"], port=int(sys.argv[1]), debug=True)
