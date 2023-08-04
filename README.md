@@ -97,7 +97,7 @@ Remove user when the tab is closed/disconnected <br>
 When using ``lst_songs.py``, you can now set a limit per anime <br>
 
 ### v0.1
-Works using ``ngrok`` and ``localhost`` if there is no device with a slow interaction (e.g. web browser too slow to load) <br>
+Works using <a href="https://ngrok.com/"> ngrok </a> and ``localhost`` if there is no device with a slow interaction (e.g. web browser too slow to load) <br>
 Caps don't matter <br>
 No ``:``, ``-`` or ``.`` will lead to a valid answer if you use ``lst_songs.py`` to create your songlist <br>
 Can submit multiple answer until you find the correct one <br>
