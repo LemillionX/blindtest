@@ -39,7 +39,7 @@ You can use ``lst_songs.py`` to automatically build the file ``./static/songs/so
 ```
 /static/
 ├── songs/
-│    ├── My Hero Academia-Boku no Hero Academia/
+│    ├── My Hero Academia_Boku no Hero Academia/
 │    │       ├── mha_opening1.mp4 
 │    │       ├── mha_opening2.mp4 
 │    ├── The Simpson/
