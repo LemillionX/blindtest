@@ -1,5 +1,5 @@
 # Blind Test mini-app
-This project was made for fun and also as an opportunity to learn how to use ``Flask``.
+This project was made for fun and also as an opportunity to learn how to use <a href="https://flask.palletsprojects.com/en/2.3.x/"> Flask </a>.
 
 ## In-Game
 ### Launching
@@ -22,7 +22,7 @@ Once the host pushed the <b> Play Song </b> button, the song starts playing and 
 </div>
 
 ### Moving on 
-The song is revealed when the host first click on the <b> Next Song </b> button. All the players cannot submit any answer anymore. Then, the host has to click again on <b> Next Song </b> button to load the next song, and we start the [Guessing](###Guessing) step again. At the end of the game, the host can restart a new one.
+The song is revealed when the host first click on the <b> Next Song </b> button. All the players cannot submit any answer anymore. Then, the host has to click again on <b> Next Song </b> button to load the next song, and we start the [Guessing](#guessing) step again. At the end of the game, the host can restart a new one.
 <div style="text-align:center">
     <img src=./img/reveal.png width="400">
     <img src=./img/restart.png width="400">
