@@ -1,6 +1,34 @@
 # Blind Test mini-app
 This project was made for fun and also as an opportunity to learn how to use ``Flask``.
 
+## In-Game
+### Launching
+Run ``main.py <port> `` to launch the app on the port ``<port>``. Then access the URL of the app. You should land on the index page where you can enter the room:
+<div style="text-align:center">
+    <img src=./img/index.png width="400">
+</div>
+
+### Waiting room
+The first player to enter the room is the host. He will be in charge of starting the game, playing songs and skipping to the next song. Wait for all the players to enter the room before starting the game.
+<div style="text-align:center">
+    <img src=./img/room.png width="400">
+</div>
+
+### Guessing
+Once the host pushed the <b> Play Song </b> button, the song starts playing and all the players can try to guess the media where the song comes from (or the title of the song, depending on your definition in the ``./static/songs/songs.json`` file, cf. section [Structure](#structure) for more details). A message will display to indicate if a player has found or not the answer.
+<div style="text-align:center">
+    <img src=./img/guess.png width="400">
+    <img src=./img/submit.png width="400">
+</div>
+
+### Moving on 
+The song is revealed when the host first click on the <b> Next Song </b> button. All the players cannot submit any answer anymore. Then, the host has to click again on <b> Next Song </b> button to load the next song, and we start the [Guessing](###Guessing) step again. At the end of the game, the host can restart a new one.
+<div style="text-align:center">
+    <img src=./img/reveal.png width="400">
+    <img src=./img/restart.png width="400">
+</div>
+
+
 ## Structure
 ### Server
 Server-side is handled in ``main.py``. 
