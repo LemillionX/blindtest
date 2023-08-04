@@ -34,7 +34,7 @@ Client-side is handled in the ``./static`` folder. Put your songs files in ``./s
 
 ```
 ### Building song list 
-You can use ``lst_songs.py`` to automatically build the file ``./static/songs/songs.json``. If you do so, you need to create a folder in ``./static/songs/`` entitled with the correct answers separated by ``-`` and to put all the corresponding songs in it.
+You can use ``lst_songs.py`` to automatically build the file ``./static/songs/songs.json``. If you do so, you need to create a folder in ``./static/songs/`` entitled with the correct answers separated by ``_`` and to put all the corresponding songs in it.
 
 ```
 /static/
