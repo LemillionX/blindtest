@@ -20,7 +20,7 @@ for anime in anime_list:
         })
 
 print(f"There are {len(anime_list)} anime !")
-np.savetxt("anime_list.txt", np.char.replace(anime_list, '_', ' / '), delimiter='\n', fmt='%s')
+np.savetxt("anime_list.txt", np.char.replace(anime_list, '_', ' / '), delimiter='\n', fmt='%s', encoding='utf8')
 
 print(f"{len(song_list['songs'])} songs found !")
 with open(r"./static/songs/songs.json", "w", encoding='utf8') as output:
